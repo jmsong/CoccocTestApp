@@ -74,19 +74,18 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch {
     @Override
     public List<RxStore> getRxStoreListToRegister() {
         moviesStore = MoviesStore.get(CoccocTestApp.get(this).getRxFlux().getDispatcher());
-        moviesStore.register();
         return Arrays.asList(moviesStore);
     }
 
     @Nullable
     @Override
     public List<RxStore> getRxStoreListToUnRegister() {
-        moviesStore.unregister();
+        moviesStore = MoviesStore.get(CoccocTestApp.get(this).getRxFlux().getDispatcher());
         return Arrays.asList(moviesStore);
     }
 
     private void refresh() {
-//        CoccocTestApp.get(this).getRestfulActionCreator().getMovies();
-        CoccocTestApp.get(this).getRestfulActionCreator().getMovie("1901");
+        CoccocTestApp.get(this).getRestfulActionCreator().getMovies();
+//        CoccocTestApp.get(this).getRestfulActionCreator().getMovie("1901");
     }
 }

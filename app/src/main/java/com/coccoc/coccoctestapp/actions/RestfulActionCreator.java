@@ -31,12 +31,8 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
                 .getMovies()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> {
-                            RxStoreChange storeChange = new RxStoreChange(MoviesStore.ID, newRxAction(GET_MOVIES, Keys.MOVIES, movies));
-                            postRxStoreChange(storeChange);
-                        },
-                        throwable ->
-                                postError(action, throwable)));
+                .subscribe(movies -> postRxAction(newRxAction(GET_MOVIES, Keys.MOVIES, movies)),
+                        throwable -> postError(action, throwable)));
     }
 
     @Override
@@ -48,10 +44,8 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
                 .getMovie(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movie -> {
-                    RxStoreChange storeChange = new RxStoreChange(MoviesStore.ID, newRxAction(GET_MOVIE, Keys.MOVIE, movie));
-                    postRxStoreChange(storeChange);
-                }, throwable -> postError(action, throwable)));
+                .subscribe(movie -> postRxAction(newRxAction(GET_MOVIE, Keys.MOVIE, movie)),
+                        throwable -> postError(action, throwable)));
     }
 
     @Override

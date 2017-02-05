@@ -7,6 +7,7 @@ import com.coccoc.coccoctestapp.model.Movie;
 import com.hardsoftstudio.rxflux.action.RxAction;
 import com.hardsoftstudio.rxflux.dispatcher.Dispatcher;
 import com.hardsoftstudio.rxflux.store.RxStore;
+import com.hardsoftstudio.rxflux.store.RxStoreChange;
 
 import java.util.ArrayList;
 
@@ -54,5 +55,7 @@ public class MoviesStore extends RxStore implements MoviesStoreInterface {
             default:
                 break;
         }
+
+        postChange(new RxStoreChange(ID, action));
     }
 }
