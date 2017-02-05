@@ -2,6 +2,7 @@ package com.hardsoftstudio.rxflux.action;
 
 import android.support.annotation.NonNull;
 import com.hardsoftstudio.rxflux.dispatcher.Dispatcher;
+import com.hardsoftstudio.rxflux.store.RxStoreChange;
 import com.hardsoftstudio.rxflux.util.SubscriptionManager;
 import rx.Subscription;
 
@@ -55,5 +56,9 @@ public abstract class RxActionCreator {
 
   public void postError(@NonNull RxAction action, Throwable throwable) {
     dispatcher.postRxAction(RxError.newRxError(action, throwable));
+  }
+
+  public void postRxStoreChange(@NonNull RxStoreChange storeChange) {
+    dispatcher.postRxStoreChange(storeChange);
   }
 }

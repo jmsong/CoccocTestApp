@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * Created by tungtm on 1/24/17.
  */
 
-public class MovieResponse {
-    Movie data;
+public class MovieListResponse {
+    ArrayList<Movie> data;
 
-    public Movie getMovie() {
+    public ArrayList<Movie> getMovies() {
         return data;
     }
 }

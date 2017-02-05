@@ -1,10 +1,7 @@
 package com.coccoc.coccoctestapp.core;
 
 import com.coccoc.coccoctestapp.model.Movie;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
@@ -24,10 +21,10 @@ public interface RestfulApi {
     String ENDPOINT = "https://www.cgv.vn/api/movie/";
 
     @GET("list")
-    Observable<ArrayList<Movie>> getMovies();
+    Observable<MovieListResponse> getMovies();
 
-    @GET("movie/id/{id}")
-    Observable<Movie> getMovie(@Path("id") String movieId);
+    @GET("movie/id/{movieId}")
+    Observable<MovieResponse> getMovie(@Path("movieId") String movieId);
 
     class Factory {
         private static RestfulApi instance;

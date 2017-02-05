@@ -1,9 +1,11 @@
 package com.coccoc.coccoctestapp.actions;
 
 import com.coccoc.coccoctestapp.core.RestfulApi;
+import com.coccoc.coccoctestapp.stores.MoviesStore;
 import com.hardsoftstudio.rxflux.action.RxAction;
 import com.hardsoftstudio.rxflux.action.RxActionCreator;
 import com.hardsoftstudio.rxflux.dispatcher.Dispatcher;
+import com.hardsoftstudio.rxflux.store.RxStoreChange;
 import com.hardsoftstudio.rxflux.util.SubscriptionManager;
 
 import rx.Scheduler;
@@ -29,8 +31,10 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
                 .getMovies()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies ->
-                        postRxAction(newRxAction(GET_MOVIES, Keys.MOVIES, movies)),
+                .subscribe(movies -> {
+                            RxStoreChange storeChange = new RxStoreChange(MoviesStore.ID, newRxAction(GET_MOVIES, Keys.MOVIES, movies));
+                            postRxStoreChange(storeChange);
+                        },
                         throwable ->
                                 postError(action, throwable)));
     }
@@ -45,8 +49,8 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movie -> {
-                    action.getData().put(Keys.MOVIE, movie);
-                    postRxAction(action);
+                    RxStoreChange storeChange = new RxStoreChange(MoviesStore.ID, newRxAction(GET_MOVIE, Keys.MOVIE, movie));
+                    postRxStoreChange(storeChange);
                 }, throwable -> postError(action, throwable)));
     }
 
