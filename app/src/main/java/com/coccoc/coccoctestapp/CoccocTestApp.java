@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.coccoc.coccoctestapp.actions.RestfulActionCreator;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.hardsoftstudio.rxflux.RxFlux;
 
 /**
@@ -23,6 +24,7 @@ public class CoccocTestApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Fresco.initialize(this);
         rxFlux = RxFlux.init(this);
         restfulActionCreator = new RestfulActionCreator(rxFlux.getDispatcher(), rxFlux.getSubscriptionManager());
     }
