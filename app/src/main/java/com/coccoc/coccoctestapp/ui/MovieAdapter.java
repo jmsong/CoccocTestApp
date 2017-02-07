@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private ArrayList<Movie> movies;
-    private OnRepoClicked callback;
+    private OnMovieClick callback;
 
     public MovieAdapter() {
         super();
@@ -50,11 +50,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void setCallback(OnRepoClicked callback) {
+    public void setCallback(OnMovieClick callback) {
         this.callback = callback;
     }
 
-    public interface OnRepoClicked {
+    public interface OnMovieClick {
         void onClicked(Movie repo);
     }
 

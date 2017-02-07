@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.coccoc.coccoctestapp.CoccocTestApp;
 import com.coccoc.coccoctestapp.R;
 import com.coccoc.coccoctestapp.actions.Actions;
+import com.coccoc.coccoctestapp.actions.Keys;
 import com.coccoc.coccoctestapp.model.Movie;
 import com.coccoc.coccoctestapp.stores.MoviesStore;
 import com.hardsoftstudio.rxflux.action.RxError;
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
 
 import static com.coccoc.coccoctestapp.CoccocTestApp.get;
 
-public class MainActivity extends AppCompatActivity implements RxViewDispatch, MovieAdapter.OnRepoClicked {
+public class MainActivity extends AppCompatActivity implements RxViewDispatch, MovieAdapter.OnMovieClick {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.progress_loading)
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
                         break;
 
                     case Actions.GET_MOVIE:
+                        showMovieFragment((String) change.getRxAction().getData().get(Keys.ID));
                         break;
                 }
                 break;
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
         setLoadingFrame(false);
         Throwable throwable = error.getThrowable();
         if (throwable != null) {
+            Snackbar.make(coordinatorLayout, "An error occurred", Snackbar.LENGTH_INDEFINITE).setAction("Retry", v -> get(this).getRestfulActionCreator().retry(error.getAction())).show();
+            throwable.printStackTrace();
         } else {
             Toast.makeText(this, "Unknown error", Toast.LENGTH_LONG).show();
         }
@@ -126,18 +130,19 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
         return Arrays.asList(moviesStore);
     }
 
-    private void showUserFragment(String id) {
+    private void showMovieFragment(String id) {
 
-        MovieFragment user_fragment = MovieFragment.newInstance(id);
-        getFragmentManager().beginTransaction().replace(R.id.root, user_fragment).addToBackStack(null).commit();
+        MovieFragment movieFragment = MovieFragment.newInstance(id);
+        getFragmentManager().beginTransaction().replace(R.id.root, movieFragment).addToBackStack(null).commit();
     }
 
     private void setLoadingFrame(boolean show) {
         progress_loading.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    @Override public void onClicked(Movie repo) {
-
+    @Override public void onClicked(Movie movie) {
+        setLoadingFrame(true);
+        get(this).getRestfulActionCreator().getMovie(movie.getId());
     }
 
     @Override public void onBackPressed() {

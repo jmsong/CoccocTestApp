@@ -1,39 +1,171 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="#e0e0e0"
+    android:clickable="true"
     android:orientation="vertical"
-    android:padding="15dp"
-    tools:context=".ui.MovieFragment">
+    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/user_name"
+    <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="User name" />
+        android:layout_height="150dp"
+        grid:columnCount="4"
+        grid:rowCount="8">
 
-    <TextView
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        tools:text="login" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/thumbnail"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            fresco:placeholderImage="@mipmap/ic_launcher"
+            grid:layout_columnSpan="1"
+            grid:layout_gravity="fill_vertical"
+            grid:layout_rowSpan="8" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="#60000000" />
+        <!--Movie name-->
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="3"
+            grid:layout_gravity="fill_horizontal"
+            grid:layout_rowSpan="1"
+            tools:text="Movie Name" />
 
-    <TextView
-        android:id="@+id/statistics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="5dp"
-        tools:text="Public movies: 5\nPublic gist 2" />
+        <!--Separator line-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#60000000"
+            grid:layout_columnSpan="3"
+            grid:layout_gravity="fill_horizontal"
+            grid:layout_rowSpan="1" />
 
+        <!--Director-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="1"
+            grid:layout_rowSpan="1"
+            tools:text="Director:" />
+
+        <TextView
+            android:id="@+id/director"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            grid:layout_columnSpan="2"
+            grid:layout_gravity="fill_horizontal"
+            grid:layout_rowSpan="1"
+            tools:text="Director" />
+
+        <!--Actress-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="1"
+            grid:layout_rowSpan="1"
+            tools:text="Actress:" />
+
+        <TextView
+            android:id="@+id/actress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            grid:layout_columnSpan="2"
+            grid:layout_rowSpan="1"
+            tools:text="Actress" />
+
+        <!--Genre-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="1"
+            grid:layout_rowSpan="1"
+            tools:text="Genres:" />
+
+        <TextView
+            android:id="@+id/genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="2"
+            grid:layout_rowSpan="1"
+            tools:text="Genre" />
+
+        <!--Release Date-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="1"
+            grid:layout_rowSpan="1"
+            tools:text="Release Date:" />
+
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            grid:layout_columnSpan="2"
+            grid:layout_rowSpan="1"
+            tools:text="Release Date" />
+
+        <!--End Time-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="1"
+            grid:layout_rowSpan="1"
+            tools:text="End Time:" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="2"
+            grid:layout_rowSpan="1"
+            tools:text="End Time" />
+
+        <!--Language-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="1"
+            grid:layout_rowSpan="1"
+            tools:text="Language:" />
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            grid:layout_columnSpan="2"
+            grid:layout_rowSpan="1"
+            tools:text="Language" />
+
+    </android.support.v7.widget.GridLayout>
 </LinearLayout>

@@ -11,55 +11,81 @@ import com.coccoc.coccoctestapp.CoccocTestApp;
 import com.coccoc.coccoctestapp.R;
 import com.coccoc.coccoctestapp.model.Movie;
 import com.coccoc.coccoctestapp.stores.MoviesStore;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MovieFragment extends Fragment {
-  private static final String ARG_USER_ID = "userId";
-  @BindView(R.id.user_name) TextView userNameView;
-  @BindView(R.id.login) TextView loginView;
-  @BindView(R.id.statistics) TextView statsView;
-  private String userId;
+    private static final String ARG_MOVIE_ID = "movieId";
+    @BindView(R.id.thumbnail)
+    SimpleDraweeView thumbnail;
+    @BindView(R.id.name)
+    TextView nameText;
+    @BindView(R.id.director)
+    TextView directorText;
+    @BindView(R.id.actress)
+    TextView actressText;
+    @BindView(R.id.genre)
+    TextView genreText;
+    @BindView(R.id.release_date)
+    TextView releaseDateText;
+    @BindView(R.id.end_time)
+    TextView endTimeText;
+    @BindView(R.id.language)
+    TextView languageText;
 
-  private Unbinder unbinder;
+    private String movieId;
 
-  public MovieFragment() {
-    // Required empty public constructor
-  }
+    private Unbinder unbinder;
 
-  public static MovieFragment newInstance(String userId) {
-    MovieFragment fragment = new MovieFragment();
-    Bundle args = new Bundle();
-    args.putString(ARG_USER_ID, userId);
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  @Override public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    if (getArguments() != null) {
-      userId = getArguments().getString(ARG_USER_ID);
+    public MovieFragment() {
+        // Required empty public constructor
     }
-  }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_movie, container, false);
+    public static MovieFragment newInstance(String movieId) {
+        MovieFragment fragment = new MovieFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_MOVIE_ID, movieId);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-    ButterKnife.bind(this, view);
-    return view;
-  }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    Movie user = MoviesStore.get(CoccocTestApp.get(getActivity()).getRxFlux().getDispatcher()).getMovie(userId);
-    userNameView.setText(user.getName());
-  }
+        if (getArguments() != null) {
+            movieId = getArguments().getString(ARG_MOVIE_ID);
+        }
+    }
 
-  @Override public void onDestroyView() {
-    super.onDestroyView();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_movie, container, false);
+
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Movie movie = MoviesStore.get(CoccocTestApp.get(getActivity()).getRxFlux().getDispatcher()).getMovie(movieId);
+        thumbnail.setImageURI(movie.getThumbnail());
+        nameText.setText(movie.getName());
+        directorText.setText(movie.getMovieDirector());
+        actressText.setText(movie.getMovieActress());
+        genreText.setText(movie.getGenre());
+        releaseDateText.setText(movie.getReleaseDate());
+        endTimeText.setText(movie.getMovieEndtime());
+        languageText.setText(movie.getMovieLanguage());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 //    unbinder.unbind();
-  }
+    }
 }
