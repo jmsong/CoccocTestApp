@@ -1,170 +1,141 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e0e0e0"
     android:clickable="true"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        grid:columnCount="4"
-        grid:rowCount="8">
+        android:layout_height="wrap_content"
+        app:columnCount="3"
+        app:rowCount="8">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/thumbnail"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            fresco:placeholderImage="@mipmap/ic_launcher"
-            grid:layout_columnSpan="1"
-            grid:layout_gravity="fill_vertical"
-            grid:layout_rowSpan="8" />
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_gravity="fill"
+            app:layout_rowSpan="8"
+            app:placeholderImage="@mipmap/ic_launcher" />
 
         <!--Movie name-->
         <TextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="150dp"
+            android:layout_marginRight="150dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:textSize="20sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="3"
-            grid:layout_gravity="fill_horizontal"
-            grid:layout_rowSpan="1"
-            tools:text="Movie Name" />
+            app:layout_columnSpan="2"
+            app:layout_gravity="fill"
+            tools:text="@string/lorem_ipsum" />
 
         <!--Separator line-->
         <View
-            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginEnd="150dp"
+            android:layout_marginRight="150dp"
             android:layout_marginTop="10dp"
             android:background="#60000000"
-            grid:layout_columnSpan="3"
-            grid:layout_gravity="fill_horizontal"
-            grid:layout_rowSpan="1" />
+            app:layout_columnSpan="2"
+            app:layout_gravity="fill_horizontal" />
 
         <!--Director-->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="1"
-            grid:layout_rowSpan="1"
-            tools:text="Director:" />
+            android:text="Director:" />
 
         <TextView
             android:id="@+id/director"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
             android:textSize="15sp"
-            grid:layout_columnSpan="2"
-            grid:layout_gravity="fill_horizontal"
-            grid:layout_rowSpan="1"
+            app:layout_gravity="fill_horizontal"
             tools:text="Director" />
 
         <!--Actress-->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="1"
-            grid:layout_rowSpan="1"
-            tools:text="Actress:" />
+            android:text="Actress:" />
 
         <TextView
             android:id="@+id/actress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
             android:textSize="15sp"
-            grid:layout_columnSpan="2"
-            grid:layout_rowSpan="1"
+            app:layout_gravity="fill_horizontal"
             tools:text="Actress" />
 
         <!--Genre-->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="1"
-            grid:layout_rowSpan="1"
-            tools:text="Genres:" />
+            android:text="Genres:" />
 
         <TextView
             android:id="@+id/genre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
             android:textSize="15sp"
-            android:textStyle="bold"
-            grid:layout_columnSpan="2"
-            grid:layout_rowSpan="1"
+            app:layout_gravity="fill_horizontal"
             tools:text="Genre" />
 
         <!--Release Date-->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="1"
-            grid:layout_rowSpan="1"
-            tools:text="Release Date:" />
+            android:text="Release Date:" />
 
         <TextView
             android:id="@+id/release_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
             android:textSize="15sp"
-            grid:layout_columnSpan="2"
-            grid:layout_rowSpan="1"
+            app:layout_gravity="fill_horizontal"
             tools:text="Release Date" />
 
         <!--End Time-->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="1"
-            grid:layout_rowSpan="1"
-            tools:text="End Time:" />
+            android:text="End Time:" />
 
         <TextView
             android:id="@+id/end_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
             android:textSize="15sp"
-            android:textStyle="bold"
-            grid:layout_columnSpan="2"
-            grid:layout_rowSpan="1"
+            app:layout_gravity="fill_horizontal"
             tools:text="End Time" />
 
         <!--Language-->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
             android:textSize="15sp"
             android:textStyle="bold"
-            grid:layout_columnSpan="1"
-            grid:layout_rowSpan="1"
-            tools:text="Language:" />
+            android:text="Language:" />
 
         <TextView
             android:id="@+id/language"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
             android:textSize="15sp"
-            android:textStyle="bold"
-            grid:layout_columnSpan="2"
-            grid:layout_rowSpan="1"
+            app:layout_gravity="fill_horizontal"
             tools:text="Language" />
 
     </android.support.v7.widget.GridLayout>
