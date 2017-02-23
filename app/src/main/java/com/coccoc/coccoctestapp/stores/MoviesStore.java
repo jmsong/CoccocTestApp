@@ -26,12 +26,6 @@ public class MoviesStore extends RxStore implements MoviesStoreInterface {
         super(dispatcher);
     }
 
-    public static synchronized MoviesStore get(Dispatcher dispatcher) {
-        if (instance == null) instance = new MoviesStore(dispatcher);
-
-        return instance;
-    }
-
     @Override
     public ArrayList<Movie> getMovies() {
         return movies == null ? new ArrayList<>() : movies;

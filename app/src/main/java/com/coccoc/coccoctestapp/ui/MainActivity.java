@@ -1,11 +1,12 @@
 package com.coccoc.coccoctestapp.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,11 +15,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.coccoc.coccoctestapp.CoccocTestApp;
 import com.coccoc.coccoctestapp.R;
 import com.coccoc.coccoctestapp.actions.Actions;
 import com.coccoc.coccoctestapp.actions.Keys;
+import com.coccoc.coccoctestapp.dagger.DaggerManager;
 import com.coccoc.coccoctestapp.model.Movie;
 import com.coccoc.coccoctestapp.stores.MoviesStore;
+import com.coccoc.coccoctestapp.ui.navigation.NavigationManager;
 import com.hardsoftstudio.rxflux.action.RxError;
 import com.hardsoftstudio.rxflux.dispatcher.RxViewDispatch;
 import com.hardsoftstudio.rxflux.store.RxStore;
@@ -27,12 +31,12 @@ import com.hardsoftstudio.rxflux.store.RxStoreChange;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coccoc.coccoctestapp.CoccocTestApp.get;
-
-public class MainActivity extends AppCompatActivity implements RxViewDispatch, MovieAdapter.OnMovieClick {
+public class MainActivity extends BaseActivity implements RxViewDispatch, MovieAdapter.OnMovieClick, NavigationManager.NavigationListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.progress_loading)
@@ -40,13 +44,30 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
     @BindView(R.id.root_coordinator)
     CoordinatorLayout coordinatorLayout;
     private MovieAdapter adapter;
-    private MoviesStore moviesStore;
+
+    @Inject
+    public NavigationManager mNavigationManager;
+
+    @Inject
+    public CoccocTestApp app;
+
+    @Inject
+    public MoviesStore moviesStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Inject members
+        DaggerManager.component().inject(this);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
+
+        // Initialize the NavigationManager with this activity's FragmentManager
+        mNavigationManager.init(getSupportFragmentManager());
+        mNavigationManager.setNavigationListener(this);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -99,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
         setLoadingFrame(false);
         Throwable throwable = error.getThrowable();
         if (throwable != null) {
-            Snackbar.make(coordinatorLayout, "An error occurred", Snackbar.LENGTH_INDEFINITE).setAction("Retry", v -> get(this).getRestfulActionCreator().retry(error.getAction())).show();
+            Snackbar.make(coordinatorLayout, "An error occurred" + throwable.getMessage(), Snackbar.LENGTH_INDEFINITE).setAction("Retry", v -> refresh()).show();
             throwable.printStackTrace();
         } else {
             Toast.makeText(this, "Unknown error", Toast.LENGTH_LONG).show();
@@ -119,21 +140,18 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
     @Nullable
     @Override
     public List<RxStore> getRxStoreListToRegister() {
-        moviesStore = MoviesStore.get(get(this).getRxFlux().getDispatcher());
         return Arrays.asList(moviesStore);
     }
 
     @Nullable
     @Override
     public List<RxStore> getRxStoreListToUnRegister() {
-        moviesStore = MoviesStore.get(get(this).getRxFlux().getDispatcher());
         return Arrays.asList(moviesStore);
     }
 
     private void showMovieFragment(String id) {
-
         MovieFragment movieFragment = MovieFragment.newInstance(id);
-        getFragmentManager().beginTransaction().replace(R.id.root, movieFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.root, movieFragment).addToBackStack(null).commit();
     }
 
     private void setLoadingFrame(boolean show) {
@@ -142,20 +160,37 @@ public class MainActivity extends AppCompatActivity implements RxViewDispatch, M
 
     @Override public void onClicked(Movie movie) {
         setLoadingFrame(true);
-        get(this).getRestfulActionCreator().getMovie(movie.getId());
+        app.getRestfulActionCreator().getMovie(movie.getId());
     }
 
     @Override public void onBackPressed() {
-        int count = getFragmentManager().getBackStackEntryCount();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count == 0) {
-            super.onBackPressed();
+            // we have only one fragment left so we would close the application with this back
+            showExitDialog();
         } else {
-            getFragmentManager().popBackStack();
+            mNavigationManager.navigateBack(this);
         }
+    }
+
+    /**
+     * Shows the logout dialog. Stops the service and finishes the application.
+     */
+    protected void showExitDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.exit_message).setCancelable(false).setPositiveButton(android.R.string.yes,
+                (dialog, id) -> finish()).setNegativeButton(android.R.string.cancel, null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void refresh() {
         setLoadingFrame(true);
-        get(this).getRestfulActionCreator().getMovies();
+        app.getRestfulActionCreator().getMovies();
+    }
+
+    @Override
+    public void onBackstackChanged() {
+
     }
 }

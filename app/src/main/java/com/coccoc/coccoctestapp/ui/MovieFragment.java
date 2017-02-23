@@ -7,17 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.coccoc.coccoctestapp.CoccocTestApp;
 import com.coccoc.coccoctestapp.R;
+import com.coccoc.coccoctestapp.dagger.DaggerManager;
 import com.coccoc.coccoctestapp.model.Movie;
 import com.coccoc.coccoctestapp.stores.MoviesStore;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MovieFragment extends Fragment {
+public class MovieFragment extends BaseFragment {
     private static final String ARG_MOVIE_ID = "movieId";
     @BindView(R.id.thumbnail)
     SimpleDraweeView thumbnail;
@@ -40,6 +42,9 @@ public class MovieFragment extends Fragment {
 
     private Unbinder unbinder;
 
+    @Inject
+    public MoviesStore moviesStore;
+
     public MovieFragment() {
         // Required empty public constructor
     }
@@ -55,6 +60,8 @@ public class MovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DaggerManager.component().inject(this);
 
         if (getArguments() != null) {
             movieId = getArguments().getString(ARG_MOVIE_ID);
@@ -72,7 +79,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Movie movie = MoviesStore.get(CoccocTestApp.get(getActivity()).getRxFlux().getDispatcher()).getMovie(movieId);
+        Movie movie = moviesStore.getMovie(movieId);
         thumbnail.setImageURI(movie.getThumbnail());
         nameText.setText(movie.getName());
         directorText.setText(movie.getMovieDirector());
