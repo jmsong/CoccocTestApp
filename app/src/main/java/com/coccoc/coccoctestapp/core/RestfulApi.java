@@ -1,9 +1,5 @@
 package com.coccoc.coccoctestapp.core;
 
-import com.coccoc.coccoctestapp.model.Movie;
-
-import java.util.ArrayList;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

@@ -1,12 +1,16 @@
-package com.coccoc.coccoctestapp.model;
+package com.coccoc.coccoctestapp.core;
 
 import com.google.gson.annotations.SerializedName;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by tungtm on 1/24/17.
  */
 
-public class Movie {
+public class Movie extends RealmObject {
+    @PrimaryKey
     private String id;
     private String sku;
 
@@ -26,7 +30,7 @@ public class Movie {
     private String ratingCode;
 
     @SerializedName("review_percent")
-    private int reviewPercent;
+    private Integer reviewPercent;
 
     @SerializedName("movie_trailer")
     private String movieTrailer;
@@ -51,11 +55,11 @@ public class Movie {
     private String codes;
 
     @SerializedName("is_booking")
-    private boolean isBooking;
+    private Boolean isBooking;
 
     @SerializedName("is_new")
-    private boolean isNew;
-    private int position;
+    private Boolean isNew;
+    private Integer position;
 
     public String getId() {
         return id;
@@ -137,11 +141,11 @@ public class Movie {
         this.ratingCode = ratingCode;
     }
 
-    public int getReviewPercent() {
+    public Integer getReviewPercent() {
         return reviewPercent;
     }
 
-    public void setReviewPercent(int reviewPercent) {
+    public void setReviewPercent(Integer reviewPercent) {
         this.reviewPercent = reviewPercent;
     }
 
@@ -209,27 +213,27 @@ public class Movie {
         this.codes = codes;
     }
 
-    public boolean isBooking() {
+    public Boolean isBooking() {
         return isBooking;
     }
 
-    public void setBooking(boolean booking) {
+    public void setBooking(Boolean booking) {
         isBooking = booking;
     }
 
-    public boolean isNew() {
+    public Boolean isNew() {
         return isNew;
     }
 
-    public void setNew(boolean aNew) {
+    public void setNew(Boolean aNew) {
         isNew = aNew;
     }
 
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 }

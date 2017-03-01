@@ -4,7 +4,7 @@ import com.coccoc.coccoctestapp.actions.Actions;
 import com.coccoc.coccoctestapp.actions.Keys;
 import com.coccoc.coccoctestapp.core.MovieListResponse;
 import com.coccoc.coccoctestapp.core.MovieResponse;
-import com.coccoc.coccoctestapp.model.Movie;
+import com.coccoc.coccoctestapp.core.Movie;
 import com.hardsoftstudio.rxflux.action.RxAction;
 import com.hardsoftstudio.rxflux.dispatcher.Dispatcher;
 import com.hardsoftstudio.rxflux.store.RxStore;
@@ -32,7 +32,7 @@ public class MoviesStore extends RxStore implements MoviesStoreInterface {
     }
 
     @Override
-    public Movie getMovie(String movieId) {
+    public Movie getMovie() {
         return movie;
     }
 
@@ -40,11 +40,11 @@ public class MoviesStore extends RxStore implements MoviesStoreInterface {
     public void onRxAction(RxAction action) {
         switch (action.getType()) {
             case Actions.GET_MOVIES:
-                this.movies = ((MovieListResponse)action.get(Keys.MOVIES)).getMovies();
+                this.movies = action.get(Keys.MOVIES);
                 break;
 
             case Actions.GET_MOVIE:
-                this.movie = ((MovieResponse)action.get(Keys.MOVIE)).getMovie();
+                this.movie = action.get(Keys.MOVIE);
                 break;
 
             default:

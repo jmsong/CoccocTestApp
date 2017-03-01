@@ -1,6 +1,6 @@
 package com.coccoc.coccoctestapp.stores;
 
-import com.coccoc.coccoctestapp.model.Movie;
+import com.coccoc.coccoctestapp.core.Movie;
 
 import java.util.ArrayList;
 
@@ -10,5 +10,5 @@ import java.util.ArrayList;
 
 public interface MoviesStoreInterface {
     ArrayList<Movie> getMovies();
-    Movie getMovie(String movieId);
+    Movie getMovie();
 }

@@ -1,14 +1,13 @@
 package com.coccoc.coccoctestapp.actions;
 
+import com.coccoc.coccoctestapp.core.DataServiceManager;
 import com.coccoc.coccoctestapp.core.RestfulApi;
-import com.coccoc.coccoctestapp.stores.MoviesStore;
+import com.coccoc.coccoctestapp.dagger.DaggerManager;
 import com.hardsoftstudio.rxflux.action.RxAction;
 import com.hardsoftstudio.rxflux.action.RxActionCreator;
 import com.hardsoftstudio.rxflux.dispatcher.Dispatcher;
-import com.hardsoftstudio.rxflux.store.RxStoreChange;
 import com.hardsoftstudio.rxflux.util.SubscriptionManager;
 
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -20,6 +19,7 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
 
     public RestfulActionCreator(Dispatcher dispatcher, SubscriptionManager manager) {
         super(dispatcher, manager);
+        DaggerManager.component().inject(this);
     }
 
     @Override
@@ -27,10 +27,7 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
         final RxAction action = newRxAction(GET_MOVIES);
         if (hasRxAction(action)) return;
 
-        addRxAction(action, RestfulApi.Factory.getApi()
-                .getMovies()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        addRxAction(action, DataServiceManager.getMovies()
                 .subscribe(movies -> postRxAction(newRxAction(GET_MOVIES, Keys.MOVIES, movies)),
                         throwable -> postError(action, throwable)));
     }
@@ -40,10 +37,7 @@ public class RestfulActionCreator extends RxActionCreator implements Actions {
         final RxAction action = newRxAction(GET_MOVIE, Keys.ID, movieId);
         if (hasRxAction(action)) return;
 
-        addRxAction(action, RestfulApi.Factory.getApi()
-                .getMovie(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        addRxAction(action, DataServiceManager.getMovie(movieId)
                 .subscribe(movie -> postRxAction(newRxAction(GET_MOVIE, Keys.MOVIE, movie)),
                         throwable -> postError(action, throwable)));
     }

@@ -7,10 +7,7 @@ import android.widget.FrameLayout;
 
 import com.coccoc.coccoctestapp.R;
 import com.coccoc.coccoctestapp.dagger.DaggerManager;
-import com.coccoc.coccoctestapp.ui.navigation.NavigationManager;
 import com.norbsoft.typefacehelper.TypefaceHelper;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -39,9 +36,6 @@ public class BaseActivity extends AppCompatActivity {
     public Toolbar mToolbar;
 
     public FrameLayout mContentLayout;
-
-    @Inject
-    public NavigationManager mNavigationManager;
 
 
     // ------------------------------------------------------------------------
@@ -87,7 +81,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mNavigationManager.navigateBack(this);
     }
 
     // ------------------------------------------------------------------------

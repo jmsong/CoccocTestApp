@@ -1,6 +1,5 @@
 package com.coccoc.coccoctestapp.dagger.modules;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.coccoc.coccoctestapp.CoccocTestApp;
@@ -62,4 +61,5 @@ public class AppModule {
     protected MoviesStore provideMoviesStore(Dispatcher dispatcher) {
         return new MoviesStore(dispatcher);
     }
+
 }

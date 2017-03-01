@@ -1,0 +1,140 @@
+<com.coccoc.coccoctestapp.ui.custom.MovieDetailView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true">
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:columnCount="3"
+        app:rowCount="8">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/thumbnail"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_gravity="fill"
+            app:layout_rowSpan="8"
+            app:placeholderImage="@mipmap/ic_launcher" />
+
+        <!--Movie name-->
+        <TextView
+            android:id="@+id/name"
+            android:layout_marginEnd="150dp"
+            android:layout_marginRight="150dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_columnSpan="2"
+            app:layout_gravity="fill"
+            tools:text="@string/lorem_ipsum" />
+
+        <!--Separator line-->
+        <View
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="150dp"
+            android:layout_marginRight="150dp"
+            android:layout_marginTop="10dp"
+            android:background="#60000000"
+            app:layout_columnSpan="2"
+            app:layout_gravity="fill_horizontal" />
+
+        <!--Director-->
+        <TextView
+            android:layout_width="100dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="Director:" />
+
+        <TextView
+            android:id="@+id/director"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
+            android:textSize="15sp"
+            app:layout_gravity="fill_horizontal"
+            tools:text="Director" />
+
+        <!--Actress-->
+        <TextView
+            android:layout_width="100dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="Actress:" />
+
+        <TextView
+            android:id="@+id/actress"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
+            android:textSize="15sp"
+            app:layout_gravity="fill_horizontal"
+            tools:text="Actress" />
+
+        <!--Genre-->
+        <TextView
+            android:layout_width="100dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="Genres:" />
+
+        <TextView
+            android:id="@+id/genre"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
+            android:textSize="15sp"
+            app:layout_gravity="fill_horizontal"
+            tools:text="Genre" />
+
+        <!--Release Date-->
+        <TextView
+            android:layout_width="100dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="Release Date:" />
+
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
+            android:textSize="15sp"
+            app:layout_gravity="fill_horizontal"
+            tools:text="Release Date" />
+
+        <!--End Time-->
+        <TextView
+            android:layout_width="100dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="End Time:" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
+            android:textSize="15sp"
+            app:layout_gravity="fill_horizontal"
+            tools:text="End Time" />
+
+        <!--Language-->
+        <TextView
+            android:layout_width="100dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="Language:" />
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_marginEnd="200dp"
+            android:layout_marginRight="200dp"
+            android:textSize="15sp"
+            app:layout_gravity="fill_horizontal"
+            tools:text="Language" />
+
+    </android.support.v7.widget.GridLayout>
+</com.coccoc.coccoctestapp.ui.custom.MovieDetailView>

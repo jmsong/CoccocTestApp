@@ -1,28 +1,24 @@
 package com.coccoc.coccoctestapp.ui;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.coccoc.coccoctestapp.CoccocTestApp;
 import com.coccoc.coccoctestapp.R;
 import com.coccoc.coccoctestapp.actions.Actions;
-import com.coccoc.coccoctestapp.actions.Keys;
 import com.coccoc.coccoctestapp.dagger.DaggerManager;
-import com.coccoc.coccoctestapp.model.Movie;
 import com.coccoc.coccoctestapp.stores.MoviesStore;
-import com.coccoc.coccoctestapp.ui.navigation.NavigationManager;
+import com.coccoc.coccoctestapp.ui.custom.MovieListView;
+import com.coccoc.coccoctestapp.ui.custom.ViewContainer;
 import com.hardsoftstudio.rxflux.action.RxError;
 import com.hardsoftstudio.rxflux.dispatcher.RxViewDispatch;
 import com.hardsoftstudio.rxflux.store.RxStore;
@@ -36,23 +32,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements RxViewDispatch, MovieAdapter.OnMovieClick, NavigationManager.NavigationListener {
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.progress_loading)
-    ProgressBar progress_loading;
-    @BindView(R.id.root_coordinator)
-    CoordinatorLayout coordinatorLayout;
-    private MovieAdapter adapter;
+public class MainActivity extends BaseActivity implements RxViewDispatch {
 
-    @Inject
-    public NavigationManager mNavigationManager;
+    @BindView(R.id.root) RelativeLayout rootLayout;
+    @BindView(R.id.progress_loading) ProgressBar progressBar;
+    @BindView(R.id.container) ViewContainer container;
+    @BindView(R.id.list_movies) MovieListView movieListView;
 
-    @Inject
-    public CoccocTestApp app;
+    @Inject public CoccocTestApp app;
 
-    @Inject
-    public MoviesStore moviesStore;
+    @Inject public MoviesStore moviesStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +53,6 @@ public class MainActivity extends BaseActivity implements RxViewDispatch, MovieA
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
-        // Initialize the NavigationManager with this activity's FragmentManager
-        mNavigationManager.init(getSupportFragmentManager());
-        mNavigationManager.setNavigationListener(this);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MovieAdapter();
-        adapter.setCallback(this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,16 +78,16 @@ public class MainActivity extends BaseActivity implements RxViewDispatch, MovieA
 
     @Override
     public void onRxStoreChanged(@NonNull RxStoreChange change) {
-        setLoadingFrame(false);
+        showLoading(false);
         switch (change.getStoreId()) {
             case MoviesStore.ID:
                 switch (change.getRxAction().getType()) {
                     case Actions.GET_MOVIES:
-                        adapter.setMovies(moviesStore.getMovies());
+                        movieListView.setMovies(moviesStore.getMovies());
                         break;
 
                     case Actions.GET_MOVIE:
-                        showMovieFragment((String) change.getRxAction().getData().get(Keys.ID));
+                        container.showItem(moviesStore.getMovie());
                         break;
                 }
                 break;
@@ -117,10 +96,10 @@ public class MainActivity extends BaseActivity implements RxViewDispatch, MovieA
 
     @Override
     public void onRxError(@NonNull RxError error) {
-        setLoadingFrame(false);
+        showLoading(false);
         Throwable throwable = error.getThrowable();
         if (throwable != null) {
-            Snackbar.make(coordinatorLayout, "An error occurred" + throwable.getMessage(), Snackbar.LENGTH_INDEFINITE).setAction("Retry", v -> refresh()).show();
+            Snackbar.make(rootLayout, "An error occurred" + throwable.getMessage(), Snackbar.LENGTH_INDEFINITE).setAction("Retry", v -> refresh()).show();
             throwable.printStackTrace();
         } else {
             Toast.makeText(this, "Unknown error", Toast.LENGTH_LONG).show();
@@ -149,27 +128,14 @@ public class MainActivity extends BaseActivity implements RxViewDispatch, MovieA
         return Arrays.asList(moviesStore);
     }
 
-    private void showMovieFragment(String id) {
-        MovieFragment movieFragment = MovieFragment.newInstance(id);
-        getSupportFragmentManager().beginTransaction().replace(R.id.root, movieFragment).addToBackStack(null).commit();
-    }
-
-    private void setLoadingFrame(boolean show) {
-        progress_loading.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    @Override public void onClicked(Movie movie) {
-        setLoadingFrame(true);
-        app.getRestfulActionCreator().getMovie(movie.getId());
+    private void showLoading(boolean show) {
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override public void onBackPressed() {
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-        if (count == 0) {
-            // we have only one fragment left so we would close the application with this back
+        boolean handled = container.onBackPressed();
+        if (!handled) {
             showExitDialog();
-        } else {
-            mNavigationManager.navigateBack(this);
         }
     }
 
@@ -185,12 +151,16 @@ public class MainActivity extends BaseActivity implements RxViewDispatch, MovieA
     }
 
     private void refresh() {
-        setLoadingFrame(true);
+        showLoading(true);
         app.getRestfulActionCreator().getMovies();
     }
 
-    @Override
-    public void onBackstackChanged() {
+    public void getMovie(String movieId) {
+        showLoading(true);
+        app.getRestfulActionCreator().getMovie(movieId);
+    }
 
+    public ViewContainer getContainer() {
+        return container;
     }
 }

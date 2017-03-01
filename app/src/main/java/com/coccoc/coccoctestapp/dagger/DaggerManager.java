@@ -4,30 +4,23 @@ import com.coccoc.coccoctestapp.CoccocTestApp;
 
 /**
  * Base class for initializing and accessing the Dagger Component Graph
- * This is the only singleton implementation in the project. The res of the singleton business logic managers
+ * This is the only singleton implementation in the project. The rest of the singleton business logic managers
  * are created and handled/scoped by dagger.
  * Created by tungtm on 2/16/17.
  */
 public class DaggerManager {
 
-    // ------------------------------------------------------------------------
-    // TYPES
-    // ------------------------------------------------------------------------
+    /**
+     * Dagger component graph
+     */
+    private DaggerComponentGraph graph;
 
-    private static class Holder {
-        static final DaggerManager INSTANCE = new DaggerManager();
+    // Just make it private
+    private DaggerManager() {
     }
 
-    // ------------------------------------------------------------------------
-    // STATIC FIELDS
-    // ------------------------------------------------------------------------
-
-    // ------------------------------------------------------------------------
-    // STATIC METHODS
-    // ------------------------------------------------------------------------
-
     /**
-     * @return the Gagger generate graph
+     * @return the Dagger generate graph
      */
     public static DaggerComponentGraph component() {
         return getInstance().graph;
@@ -35,23 +28,6 @@ public class DaggerManager {
 
     public static DaggerManager getInstance() {
         return Holder.INSTANCE;
-    }
-
-    // ------------------------------------------------------------------------
-    // FIELDS
-    // ------------------------------------------------------------------------
-
-    /**
-     * Dagger component graph
-     */
-    private DaggerComponentGraph graph;
-
-    // ------------------------------------------------------------------------
-    // CONSTRUCTORS
-    // ------------------------------------------------------------------------
-
-    // Just make it private
-    private DaggerManager() {
     }
 
     /**
@@ -62,11 +38,7 @@ public class DaggerManager {
         graph.inject(app);
     }
 
-    // ------------------------------------------------------------------------
-    // METHODS
-    // ------------------------------------------------------------------------
-
-    // ------------------------------------------------------------------------
-    // GETTERS / SETTTERS
-    // ------------------------------------------------------------------------
+    private static class Holder {
+        static final DaggerManager INSTANCE = new DaggerManager();
+    }
 }

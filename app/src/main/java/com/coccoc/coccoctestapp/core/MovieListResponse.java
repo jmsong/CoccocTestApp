@@ -1,7 +1,5 @@
 package com.coccoc.coccoctestapp.core;
 
-import com.coccoc.coccoctestapp.model.Movie;
-
 import java.util.ArrayList;
 
 /**

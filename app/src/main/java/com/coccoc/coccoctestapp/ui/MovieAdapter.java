@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.coccoc.coccoctestapp.R;
-import com.coccoc.coccoctestapp.model.Movie;
+import com.coccoc.coccoctestapp.core.Movie;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     public MovieAdapter() {
         super();
-        movies = new ArrayList<>();
+        movies = new ArrayList<>(0);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public interface OnMovieClick {
-        void onClicked(Movie repo);
+        void onClicked(Movie movie);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

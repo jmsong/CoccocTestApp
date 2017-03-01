@@ -1,18 +1,18 @@
 package com.coccoc.coccoctestapp;
 
 import android.app.Application;
-import android.content.Context;
 import android.graphics.Typeface;
 
 import com.coccoc.coccoctestapp.actions.RestfulActionCreator;
 import com.coccoc.coccoctestapp.dagger.DaggerManager;
-import com.coccoc.coccoctestapp.stores.MoviesStore;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.hardsoftstudio.rxflux.RxFlux;
 import com.norbsoft.typefacehelper.TypefaceCollection;
 import com.norbsoft.typefacehelper.TypefaceHelper;
 
 import javax.inject.Inject;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by tungtm on 1/24/17.
@@ -33,6 +33,11 @@ public class CoccocTestApp extends Application {
 
     private void initLibs() {
         Fresco.initialize(this);
+
+        // Initialize Realm
+        Realm.init(this);
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(realmConfig);
 
         // Initialize dagger
         DaggerManager.getInstance().buildComponentAndInject(this);
